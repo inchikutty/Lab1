@@ -1,16 +1,30 @@
 {
-    "name": "softtest",
-    "version": "0.0.0",
-    "devDependencies": {
-        "grunt": "~0.4.1",
-        "grunt-contrib-connect": "~0.5.0",
-        "grunt-contrib-jshint": "~0.6.3",
-        "grunt-contrib-watch": "~0.5.2",
-        "grunt-open": "~0.2.0",
-        "load-grunt-tasks": "~0.1.0",
-        "time-grunt": "~0.1.1"
-    },
-    "engines": {
-        "node": ">=0.8.0"
-    }
+  "name": "softtest",
+  "version": "0.0.0",
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-cli": "0.1.6",
+    "grunt-contrib-clean": "~0.4.0",
+    "grunt-contrib-connect": "~0.6.0",
+    "grunt-contrib-csslint": "*",
+    "grunt-contrib-jshint": "~0.7.0",
+    "grunt-contrib-qunit": "~0.3.0",
+    "grunt-contrib-watch": "~0.5.2",
+    "grunt-coveralls": "^1.0.0",
+    "grunt-mutation-testing": "^1.2.3",
+    "grunt-open": "~0.2.0",
+    "grunt-parallel-behat": "*",
+    "grunt-phantomflow": "^0.2.4",
+    "grunt-qunit-cov": "~0.3.2",
+    "grunt-qunit-istanbul": "*",
+    "grunt-qunit-junit": "~0.1.0",
+    "karma": "^0.13.9",
+    "karma-coverage": "^0.5.2",
+    "karma-qunit": "^0.1.5",
+    "load-grunt-tasks": "~0.1.0",
+    "time-grunt": "~0.1.1"
+  },
+  "engines": {
+    "node": ">=0.8.0"
+  }
 }

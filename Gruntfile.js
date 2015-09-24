@@ -10,9 +10,17 @@ module.exports = function(grunt) {
     var yeomanConfig = {
         app: 'app'
     };
+	var phantomflowConfig = {
+		test: {
+			tests: '/tests/test.js'
+		},
+		report: {} // this task is reserved for reporting only
+	};
+
 
     grunt.initConfig({
         yeoman: yeomanConfig,
+		decision: phantomflowConfig,
         watch: {
             options: {
                 livereload: '<%= connect.options.livereload %>'
@@ -21,6 +29,9 @@ module.exports = function(grunt) {
                 '<%= yeoman.app %>/*.html',
                 '<%= yeoman.app %>/styles/{,*/}*.css',
                 '<%= yeoman.app %>/scripts/{,*/}*.js',
+				'<%= yeoman.app %>/tests/{,*/}*.{js,html}',
+				'<%= yeoman.app %>/report/{,*/}*.{js,html}',
+				'<%= yeoman.app %>/temp/{,*/}*.{js,html}',
                 '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
             ]
         },
@@ -43,30 +54,80 @@ module.exports = function(grunt) {
                 options: {
                     open: true,
                     base: [
-                        '<%= yeoman.app %>/scripts',
+                        '<%= yeoman.app %>/tests',
+						"<%= yeoman.app %>/build/report/coverage",
                         '<%= yeoman.app %>'
                     ]
                 }
             }
         },
+		qunit: {
+			options: {
+				timeout: 30000,
+				"--web-security": "no",
+				coverage: {
+					src: [ "<%= yeoman.app %>/scripts/main.js" ],
+					instrumentedFiles: "temp/",
+					htmlReport: "<%= yeoman.app %>/build/report/coverage",
+					lcovReport: "<%= yeoman.app %>/build/report/lcov",
+					linesThresholdPct: 0
+				}
+			},
+			files: ["<%= yeoman.app %>/tests/index.html"]
+		},
+		coveralls: {
+			options: {
+			// dont fail if coveralls fails
+				force: true
+			},
+			main_target: {
+				src: "<%= yeoman.app %>/build/report/lcov/lcov.info"
+			}
+		},
         open: {
             server: {
                 path: 'http://localhost:<%= connect.options.port %>'
             }
-        }
+        },
+		mutationTest: {
+			options: {
+				test: 'grunt test'
+			},
+			target: {
+				code: ['scripts/main.js'],
+				specs: 'scripts/test.js',
+				mutate: 'scripts/main.js'
+			}
+		}
     });
-
+	
+	// Default task.
+	grunt.registerTask("default", "qunit");
     grunt.registerTask('server', function(target) {
         grunt.task.run([
             'connect:livereload',
             'watch'
         ]);
     });
-
     grunt.registerTask('test', function(target) {
         grunt.task.run([
             'connect:test',
             'watch'
         ]);
     });
+	grunt.registerTask('qunit', function(target) {
+        grunt.task.run([
+            'connect:qunit',
+            'watch'
+        ]);
+    });
+	// These plug-ins provide necessary tasks.
+	grunt.loadNpmTasks('grunt-mutation-testing');
+	grunt.loadNpmTasks("grunt-contrib-jshint");
+	grunt.loadNpmTasks("grunt-coveralls");
+	grunt.loadNpmTasks("grunt-qunit-istanbul");
+	grunt.loadNpmTasks('grunt-phantomflow');
+	//grunt.loadNpmTasks("grunt-contrib-concat");
+	//grunt.loadNpmTasks("grunt-contrib-uglify");
+	grunt.loadNpmTasks("grunt-contrib-watch");
 };
