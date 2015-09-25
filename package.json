@@ -16,7 +16,7 @@
     "grunt-parallel-behat": "*",
     "grunt-phantomflow": "^0.2.4",
     "grunt-qunit-cov": "~0.3.2",
-    "grunt-qunit-istanbul": "*",
+    "grunt-qunit-istanbul": "^0.4.0",
     "grunt-qunit-junit": "~0.1.0",
     "karma": "^0.13.9",
     "karma-coverage": "^0.5.2",
@@ -26,5 +26,8 @@
   },
   "engines": {
     "node": ">=0.8.0"
+  },
+  "scripts": {
+	"ci": "grunt && grunt coveralls"
   }
 }

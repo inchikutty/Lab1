@@ -31,6 +31,7 @@ module.exports = function(grunt) {
                 '<%= yeoman.app %>/scripts/{,*/}*.js',
 				'<%= yeoman.app %>/tests/{,*/}*.{js,html}',
 				'<%= yeoman.app %>/report/{,*/}*.{js,html}',
+				'<%= yeoman.app %>/build/{,*/}*.{js,html}',
 				'<%= yeoman.app %>/temp/{,*/}*.{js,html}',
                 '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
             ]
@@ -68,9 +69,10 @@ module.exports = function(grunt) {
 				coverage: {
 					src: [ "<%= yeoman.app %>/scripts/main.js" ],
 					instrumentedFiles: "temp/",
+					coberturaReport: "report/",
 					htmlReport: "<%= yeoman.app %>/build/report/coverage",
 					lcovReport: "<%= yeoman.app %>/build/report/lcov",
-					linesThresholdPct: 0
+					linesThresholdPct: 70
 				}
 			},
 			files: ["<%= yeoman.app %>/tests/index.html"]
@@ -100,9 +102,7 @@ module.exports = function(grunt) {
 			}
 		}
     });
-	
-	// Default task.
-	grunt.registerTask("default", "qunit");
+
     grunt.registerTask('server', function(target) {
         grunt.task.run([
             'connect:livereload',
@@ -121,6 +121,8 @@ module.exports = function(grunt) {
             'watch'
         ]);
     });
+	grunt.registerTask("default", [ "qunit", "server", "test"]);
+
 	// These plug-ins provide necessary tasks.
 	grunt.loadNpmTasks('grunt-mutation-testing');
 	grunt.loadNpmTasks("grunt-contrib-jshint");
@@ -130,4 +132,5 @@ module.exports = function(grunt) {
 	//grunt.loadNpmTasks("grunt-contrib-concat");
 	//grunt.loadNpmTasks("grunt-contrib-uglify");
 	grunt.loadNpmTasks("grunt-contrib-watch");
+
 };
